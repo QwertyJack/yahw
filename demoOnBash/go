@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "Talk to Turing Robot. Make sure to run './test' before running this program."
+while true
+do
+	echo -n "Ready. Press Enter to record, Ctrl-c to exit..."
+	read
+	echo "Recording... Press Ctrl-c to stop."
+	/usr/bin/arecord -c 1 -r16000 -f S16_LE /tmp/in.wav
+	echo "Anylzing..."
+	./iat /tmp/in.wav > /tmp/in.txt
+	echo "Communicating with Turing Robot..."
+	./turing `cat /tmp/in.txt` > /tmp/out.tmp
+	grep 100000 /tmp/out.tmp  > /dev/null && grep -Po "(?<=text\":\").*?(?=\")" /tmp/out.tmp > /tmp/out.txt
+	echo "She says :"`cat /tmp/out.txt`
+	echo "Synthesising..."
+	./tts /tmp/out.txt /tmp/out.wav
+	echo "Speaking..."
+	/usr/bin/aplay /tmp/out.wav
+done

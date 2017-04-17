@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+	<title>Change Info</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/templatemo_style.css') }}" rel="stylesheet" type="text/css"> 
+
+</head>
+<body class="templatemo-bg-gray">
+	<h1 class="margin-bottom-15">{{ user.username}} 的个人信息</h1>
+	<div class="container">
+		<div class="col-md-12">			
+			<form class="form-horizontal templatemo-create-account templatemo-container" role="form" action="#" method="post">
+				<div class="form-inner">
+			       	<div class="form-group">
+                      <div class="col-md-6">
+                        <label for="username" class="control-label">性别</label>
+                    <p> {% if user.sex=="女" %}
+                        <input type="radio" value="男" name="sex" >男 &nbsp;
+                        <input type="radio" value="女" name="sex" checked="checked">女
+                        {% else %}
+                        <input type="radio" value="男" name="sex" checked="checked">男 &nbsp;
+                        <input type="radio" value="女" name="sex" >女
+                        {% endif %}
+                    </p>
+                      </div>   
+                    </div> 
+                    <div class="form-group">
+			          <div class="col-md-6">		          	
+			            <label for="username" class="control-label">生日</label>
+                        <p>
+			              <select name="year">
+                            {% for year in range(1978,2015) %}
+                                {% if year|string+"年" in birthday %}
+                                <option value="{{ year }}" selected="selected">{{year}} </option>
+                                {% else %}
+                                <option value="{{ year }}">{{year}} </option>
+                                {% endif %}
+                            {% endfor %}
+                          </select>	  年
+                          <select name="month">
+                            {% for month in range(1,13) %}
+                                {% if month|string+"月" in birthday %}
+                                <option value="{{ month }}" selected="selected">{{month}} </option>
+                                {% else %}
+                                <option value="{{ month }}">{{month}} </option>
+                                {% endif %}
+                            {% endfor %}
+                          </select>	  月
+                          <select name="day">
+                            {% for day in range(1,32) %}
+                                {% if month|string+"日" in birthday %}
+                                <option value="{{ day }}" selected="selected">{{day}} </option>
+                                {% else %}
+                                <option value="{{ day }}">{{day}} </option>
+                                {% endif %}
+                            {% endfor %}
+                          </select>	日
+                        </p>            		  
+                      </div>   
+			        </div> 
+
+                    <div class="form-group">
+			          <div class="col-md-6">
+                        <label for="school" class="control-label">学校</label>
+                        <input type="text" class="form-control" name="school" value="{{ user.school }}">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="school" class="control-label">国籍</label>
+                        <input type="text" class="form-control" name="nation" value="{{ user.nation }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <input type="submit" value="提交修改" class="btn btn-info">
+                        <a href="{{ url_for('mypage') }}" class="pull-right">返回</a>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            {% for message in get_flashed_messages() %}
+                            <div class="flash">{{ message }}</div>
+                            {% endfor %}    
+                        </div>
+                    </div>
+
+                </div>                      
+              </form>   	      
+		</div>
+	</div>
+	
+</body>
+</html>

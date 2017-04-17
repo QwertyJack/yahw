@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+	<title>搜索好友</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+
+	<!-- stylesheet css -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/templatemo-blue.css') }}" rel="stylesheet" type="text/css"> 
+  <link href="{{ url_for('static', filename='css/animation.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet" type="text/css"> 
+  
+  <script>
+   $(window).load(function(){
+    $().UItoTop({ easingType: 'easeOutQuart' });
+    $('.gallery .gall_item').touchTouch();
+   });
+   $(document).ready(function(){
+       jQuery('#camera_wrap').camera({
+        loader: false,
+        pagination: true ,
+        minHeight: '500',
+        thumbnails: false,
+        height: '44.42708333333333%',
+        caption: true,
+        navigation: false,
+        fx: 'mosaic'
+      });
+      $('.gallery .gall-item').touchTouch();
+    });
+  </script>
+</head>
+
+<body data-spy="scroll" data-target=".navbar-collapse">
+
+<header id="home" class="page">
+  <div class="navigation single-page-nav">
+    <div class="container_12">
+      <div class="grid_12">
+        <h1 class="logo">
+          {% if session.search_friend=="ALL:" %}
+          ALL USERS
+          {% else %}
+            {% if session.search_friend==session.username %}
+            我关注了
+            {% else %}
+            {{ session.search_friend }}关注了
+            {% endif %}
+          {% endif %}
+        </h1>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('index') }}" class="current">Home</a></li>
+            <li><a href="{{ url_for('mypage') }}">Me</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <div class="form-group">
+				      <div class="input-group">
+                <div class="input-group-addon"></div>
+                <form action="{{ url_for('search_friend',search_friend=session.search_friend) }}" method="POST">
+				        <input class="form-control" type="text" placeholder="搜索好友" value="" name="search_content"/>
+                </form>
+				      </div>
+		   	    </div> 
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="container">
+	<div class="row">
+        <div class="col-md-8 col-sm-12">
+        	<div class="languages">
+				<h3 class="accent">搜索结果</h3>
+				<ul style="list-style-type:disc">	
+				{% for friend in friends %}
+                    <li>{% if friend.user.username==session.username %}
+                        <a href="{{ url_for('mypage') }}">{{ friend.user.username }}</a>
+                        <font style="position:absolute;right:50%"> 我</font>
+                        {% else %}
+                        <a href="{{ url_for('hispage', username=friend.user.username) }}">{{ friend.user.username }}</a>
+                        {% if friend.r %}
+                        <a style="position:absolute;right:50%" href="{{ url_for('follow_or_not', username2=friend.user.username) }}">取消关注</a>
+                        {% else%}
+                        <a style="position:absolute;right:50%" href="{{ url_for('follow_or_not', username2=friend.user.username) }}">关注</a>
+                        {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %} 
+				</ul>
+			</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-6">
+				<p>此网页仅供测试，对任何法律问题及风险不承担任何责任。</p>
+			</div>
+		</div>
+	</div>
+</footer>      
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.backstretch.min.js') }}"></script>
+
+<script>
+    $(window).load(function(){$('.preloader').delay(100).fadeOut("slow"); // set duration in brackets    
+    });
+    $(function(){
+        jQuery(document).ready(function() {
+            $('body').backstretch([
+                 "{{ url_for('static', filename='images/tm-bg-slide-1.jpg') }}", 
+                 "{{ url_for('static', filename='images/tm-bg-slide-2.jpg') }}",
+                 "{{ url_for('static', filename='images/tm-bg-slide-3.jpg') }}"
+                    ],  {duration: 3200, fade: 1300});
+            });
+    })
+</script>
+
+</body>
+</html>

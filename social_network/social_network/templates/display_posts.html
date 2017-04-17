@@ -1,0 +1,79 @@
+<!-- <section class="container"> -->
+<h3 class="white" style="position:relative; left: -20px;">好友动态</h3><br>
+    <div class="row">
+        {% for row in posts %}
+        <div class="col-md-12">
+                <div class="education-c">
+                    <div class="name">
+                    {% if row.user.photo_thumb %}
+                    <img src="{{ url_for('static',filename='Media/'+row.user.photo_thumb) }}"  width="40" height="40"/>
+                    {% else %}
+                    <img src="{{ url_for('static',filename='images/default_thumb.jpg') }}"  width="40" height="40"/>
+                    {% endif %}
+
+                    &nbsp;&nbsp;
+                    {% if row.user.username == session.username %}
+                    <a href="{{ url_for('mypage') }}"><font style="color:white">{{ row.user.username }}</font></a>
+                    {% else %}
+                    <a href="{{ url_for('hispage', username=row.user.username) }}"><font style="color:white">{{ row.user.username }}</font></a>
+                    {% endif %}
+                    &nbsp;&nbsp;&nbsp;&nbsp;<font size="2" style="color:white"> {{ row.post.date }} </font>
+                    </div>
+                </div>
+                <div class="weibo"> 
+                    <div class="txt">
+                        {% if row.post.text %}
+                        <p>{{ row.post.text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="photo">
+                        {% if row.post.image %}
+                        <img src="{{ url_for('static',filename='Media/'+row.post.image) }}" width="160">
+                        {% endif %}
+                    </div>
+                    <a class="redbutton" href="/?action=like&pid={{row.post.id}}"> 点赞 {{ row.post.like_num }}</a>
+                </div>
+				<div class="photo">
+                    {% if row.user.username == session.username %}
+					<a class="redbutton" href="/?action=deletet&pid={{row.post.id}}" style="color:white;position:relative; float:right;">删除</a>
+                    {% endif %}
+				</div>
+                <div class="education-description">
+                    <p>
+                        <form action="/?action=comment" method="post">
+                          <textarea name="text" rows="1" style="overflow-y:visible;color:black;width:50%" autocomplete="off" placeholder="评论" id="{{row.post.id}}" value=""></textarea>
+                          <input type="hidden" name="post_id" value="{{ row.post.id }}" />
+                          <input type="submit" value="提交" style="color:black;position:relative; top:-8px;"/>
+                        </form>
+                    </p>
+                    {% for comment in row.comments %}
+                    {% if comment[1] %}
+                        <p> <div style="width:400px" onclick="var re=document.getElementById('{{row.post.id }}');if (re.value.startsWith('@{{comment[1]}}')) {return;}re.value='@{{comment[1]}}:'+re.value;return;">
+                            {% if comment[1] == session.username %}
+                            <a href="{{ url_for('mypage') }}" >
+                            {% else %}
+                            <a href="{{ url_for('hispage', username=comment[1]) }}">
+                            {% endif %}
+                            <font style="color:#09c7f7">{{ comment[1] }}</font></a>
+                            {% if comment[0].reply_user %}
+                            @
+                                {% if comment[0].reply_user == session.username %}
+                                <a href="{{ url_for('mypage') }}" >
+                                {% else %}
+                                <a href="{{ url_for('hispage', username=comment[0].reply_user) }}">
+                                {% endif %}
+                                <font style="color:#09c7f7">{{ comment[0].reply_user }}</font>
+                                </a>
+                            {% endif %}
+                            ：
+                            {{ comment[0].text }} 
+                            <font size="2" style="position:absolute;right:0"> <br />{{ comment[0].date }} &nbsp;&nbsp;
+                            </font></div>{% if comment[1]==session.username %}<a href="/?action=dc&cid={{comment[0].id}}"><font size="2" style="position:absolute; right:30%;">删除</font></a>{% endif %}</p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+        </div>    
+        {% endfor %}               
+    </div>
+<!-- </section> -->
+

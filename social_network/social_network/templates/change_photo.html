@@ -1,0 +1,40 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>修改头像</title>
+</head>
+
+<body>
+<h2>修改头像</h2>
+  <form action="{{ url_for('change_photo') }}" method="post" enctype="multipart/form-data">
+    <dd id="post_img"></dd>
+    <br />
+    <input id="imgfile" name="imgfile" type="file" accept="image/gif, image/jpeg" style="color:transparent;"/>
+    <input type="submit" value="提交修改">
+  </form>
+</body>
+
+
+<script type="text/javascript">
+    var result = document.getElementById("post_img"); 
+    var input = document.getElementById("imgfile");     
+    if(typeof FileReader==='undefined'){ 
+        result.innerHTML = "抱歉，你的浏览器不支持 FileReader"; 
+        input.setAttribute('disabled','disabled');
+    }else{ 
+        input.addEventListener('change',readFile,false); 
+    } 
+    function readFile(){ 
+        var file = this.files[0]; 
+        if(!/image\/\w+/.test(file.type)){ 
+            alert("文件必须为图片！"); 
+            return false; 
+        } 
+        var reader = new FileReader(); 
+        reader.readAsDataURL(file); 
+        reader.onload = function(e){ 
+            result.innerHTML = '<img id="thumbnail" height="200" width="200" src="'+this.result+'"/>' 
+        } 
+    } 
+</script>
+<html>

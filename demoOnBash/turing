@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CURL="curl -Ss -G --data-urlencode"
+URL=http://www.tuling123.com/openapi/api
+API_KEY=55b9bf11ef10abc3cc84ecb4ec6cb02e
+
+$CURL "key=$API_KEY&info=$1" $URL

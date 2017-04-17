@@ -1,0 +1,36 @@
+#!/bin/bash
+
+echo "This is a test program."
+
+echo -n "Tesing record excutable... "
+[ -x "/usr/bin/arecord" ] \
+	|| { echo "ALSA not found! Try to install 'alsa-utils'. Exit." && exit 0; }
+echo "found."
+
+echo -n "Testing record device... press Enter to record, Ctrl-c to exit..."
+read
+echo -n "Recording... Press Ctrl-c to stop."
+/usr/bin/arecord -c 1 -r16000 -f S16_LE /tmp/test.wav 2> /tmp/log \
+	|| { echo "Recording failed! See '/tmp/log'. Exit." && exit; }
+echo "Success."
+
+echo -n "Tesing play excutable... "
+[ -x "/usr/bin/aplay" ] \
+	|| { echo "ALSA not found! Try to install 'alsa-utils'. Exit." && exit 0; }
+echo "found."
+
+echo -n "Playing... "
+/usr/bin/aplay /tmp/test.wav 2> /tmp/log \
+	|| { echo "Playing failed! See '/tmp/log'. Exit." && exit; }
+echo "success."
+
+echo -n "Testing Turing Robot... "
+./turing hehe | grep 100000 > /dev/null \
+	|| { echo "connecting to Turing Robot failed! Check internet. Exit."; exit; }
+echo "success."
+
+echo -n "Compiling utils... "
+make 2> /tmp/log \
+	|| { echo "failed! See '/tmp/log'. Exit."; exit; }
+echo "done."
+echo "End of test with success."

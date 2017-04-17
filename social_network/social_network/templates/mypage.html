@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>我的主页</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+
+	<!-- stylesheet css -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/templatemo-blue.css') }}">
+</head>
+
+
+<div class="page" align="right" style="position:relative;right:40px;">
+  <br />
+  <a href="{{ url_for('index') }}"><font size="6" color="white">Home</font></a>&nbsp;&nbsp;
+  <a href="{{ url_for('mypage') }}"><font size="6" color="white">Me</font></a>&nbsp;&nbsp;
+  <a href="{{ url_for('logout') }}"><font size="6" color="white">Logout</font></a>
+</div>
+
+
+
+<body data-spy="scroll" data-target=".navbar-collapse">
+
+<!-- preloader section -->
+<div class="preloader">
+	<div class="sk-spinner sk-spinner-wordpress">
+       <span class="sk-inner-circle"></span>
+     </div>
+</div>
+
+<!-- header section -->
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+                <a href="{{ url_for('change_photo') }}">
+                {% if user.photo %}
+				<img src="{{ url_for('static', filename='Media/'+user.photo) }}" alt="templatemo easy profile" width="165" height="101" class="img-responsive img-circle tm-border">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/aragakki.jpg') }}" alt="templatemo easy profile" width="165" height="101" class="img-responsive img-circle tm-border">
+                {% endif %}
+                </a>
+				<hr>
+				<h1 class="tm-title bold shadow">{{ session.username }}</h1>
+                <hr>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div id="sidebar">
+
+<section class="container">
+    <div class="row"> 
+        <div class="col-md-4 col-sm-12">
+            <form action="{{ url_for('search_friend',search_friend=session.username) }}" method="POST">
+            <p><label for="searched_content">查询我的关注:</label></p>
+            <p><input type="text" name="search_content" /></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+	<div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="row">
+            <div class="col-md-12">
+            	<div class="contact">
+        			<div>
+        				<h2 class="accent">个人信息</h2>
+        					<ul>
+                                {% if user.sex %}
+        						<li>性别：{{ user.sex }}</li>
+                                {% else %}
+                                <li>性别：男</li>
+                                {% endif %}
+        						{% if user.birthday %}
+                                <li>生日：{{user.birthday}}</li>
+                                {% else %}
+                                <li>生日：2000年01月01日</li>
+                                {% endif %}
+                                {% if user.school %}
+                                <li>学校：{{ user.school }}</li>
+                                {% else %}
+                                <li>学校：北京大学</li>
+                                {% endif %}
+                                {% if user.nation %}
+                                <li>国籍：{{ user.nation }}</li>
+                                {% else %}
+                                <li>国籍：中国</li>
+                                {% endif %}
+        					</ul>
+        			</div>
+                    <form action="{{ url_for('change_info') }}">
+                    <input type="submit" value="修改个人信息" >
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="languages">
+                    <h2 class="accent">我的关注</h2>
+                        <ul>
+                            {% for follow in follows %}
+                            <li><a href="{{ url_for('hispage', username=follow.username) }}">{{ follow.username }}</a></li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>  
+            </div>
+        </div>
+        
+        <div class="col-md-8 col-sm-12">
+            <div class="experience">
+                <h2 class="white">我的动态</h2>
+                    {% include "display_posts.html" %}
+            </div>
+        </div>  
+    </div>
+</section>
+
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-sm-12">
+				<p>此网页仅供测试，对任何法律问题及风险不承担任何责任。</p>
+				<ul class="social-icons">
+					<li><a href="#" class="fa fa-facebook"></a></li>
+                    <li><a href="#" class="fa fa-google-plus"></a></li>
+					<li><a href="#" class="fa fa-twitter"></a></li>
+					<li><a href="#" class="fa fa-dribbble"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>      
+
+<!-- javascript js -->	
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.backstretch.min.js') }}"></script>
+
+<script>
+    $(window).load(function(){$('.preloader').delay(100).fadeOut("slow"); // set duration in brackets    
+    });
+    $(function(){
+        jQuery(document).ready(function() {
+            $('body').backstretch([
+                 "{{ url_for('static', filename='images/tm-bg-slide-1.jpg') }}", 
+                 "{{ url_for('static', filename='images/tm-bg-slide-2.jpg') }}",
+                 "{{ url_for('static', filename='images/tm-bg-slide-3.jpg') }}"
+                    ],  {duration: 3200, fade: 1300});
+            });
+    })
+</script>
+</body>
+</html>
