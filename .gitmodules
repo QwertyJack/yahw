@@ -1,6 +1,6 @@
 [submodule "hamburger"]
 	path = hamburger
-	url = git@github.com:QwertyJack/hamburger.git
+	url = git@github.com:PedroLiu/hamburger.git
 [submodule "polynomial-loop-invariant-synthesis"]
 	path = polynomial-loop-invariant-synthesis
 	url = git@github.com:QwertyJack/polynomial-loop-invariant-synthesis.git
